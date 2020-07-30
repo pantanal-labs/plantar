@@ -1,6 +1,7 @@
 defmodule Plantar.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Plantar.Plant.Crop
 
   @derive {Inspect, except: [:password]}
   schema "users" do
@@ -9,6 +10,8 @@ defmodule Plantar.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+
+    has_many :crops, Crop
 
     timestamps()
   end

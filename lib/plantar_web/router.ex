@@ -72,6 +72,13 @@ defmodule PlantarWeb.Router do
   scope "/", PlantarWeb do
     pipe_through [:browser]
 
+    live "/crops", CropLive.Index, :index
+    live "/crops/new", CropLive.Index, :new
+    live "/crops/:id/edit", CropLive.Index, :edit
+
+    live "/crops/:id", CropLive.Show, :show
+    live "/crops/:id/show/edit", CropLive.Show, :edit
+
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
