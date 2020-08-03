@@ -2,6 +2,10 @@
 
 <h3>Change name</h3>
 
+<%= if @current_user.admin do %>
+<h3>Role: admin</h3>
+<% end %>
+
 <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update_name), fn f -> %>
   <%= if @email_changeset.action do %>
     <div class="alert alert-danger">
