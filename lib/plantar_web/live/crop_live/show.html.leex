@@ -1,0 +1,57 @@
+<h1>Show Crop</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, PlantarWeb.CropLive.FormComponent,
+    id: @crop.id,
+    title: @page_title,
+    action: @live_action,
+    crop: @crop,
+    return_to: Routes.crop_show_path(@socket, :show, @crop) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @crop.name %>
+  </li>
+
+  <li>
+    <strong>Alternatives names:</strong>
+    <%= @crop.alternatives_names %>
+  </li>
+
+  <li>
+    <strong>Binomial name:</strong>
+    <%= @crop.binomial_name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @crop.description %>
+  </li>
+
+  <li>
+    <strong>Height:</strong>
+    <%= @crop.height %>
+  </li>
+
+  <li>
+    <strong>Row spacing:</strong>
+    <%= @crop.row_spacing %>
+  </li>
+
+  <li>
+    <strong>Days of maturity:</strong>
+    <%= @crop.days_of_maturity %>
+  </li>
+
+  <li>
+    <strong>Sun requirements:</strong>
+    <%= @crop.sun_requirements %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.crop_show_path(@socket, :edit, @crop), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.crop_index_path(@socket, :index) %></span>
