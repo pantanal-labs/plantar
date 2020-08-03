@@ -2,20 +2,17 @@ defmodule PlantarWeb.CropLiveTest do
   use PlantarWeb.ConnCase
 
   import Phoenix.LiveViewTest
+  import Plantar.AccountsFixtures
+  import Plantar.PlantFixtures
 
-  alias Plantar.Plant
 
   @create_attrs %{alternatives_names: "some alternatives_names", binomial_name: "some binomial_name", days_of_maturity: 42, description: "some description", height: 42, name: "some name", row_spacing: 42, sun_requirements: "some sun_requirements"}
   @update_attrs %{alternatives_names: "some updated alternatives_names", binomial_name: "some updated binomial_name", days_of_maturity: 43, description: "some updated description", height: 43, name: "some updated name", row_spacing: 43, sun_requirements: "some updated sun_requirements"}
   @invalid_attrs %{alternatives_names: nil, binomial_name: nil, days_of_maturity: nil, description: nil, height: nil, name: nil, row_spacing: nil, sun_requirements: nil}
 
-  defp fixture(:crop) do
-    {:ok, crop} = Plant.create_crop(@create_attrs)
-    crop
-  end
 
   defp create_crop(_) do
-    crop = fixture(:crop)
+    crop = crop_fixture()
     %{crop: crop}
   end
 
@@ -30,6 +27,10 @@ defmodule PlantarWeb.CropLiveTest do
     end
 
     test "saves new crop", %{conn: conn} do
+      user = user_fixture()
+
+      conn = conn |> log_in_user(user)
+
       {:ok, index_live, _html} = live(conn, Routes.crop_index_path(conn, :index))
 
       assert index_live |> element("a", "New Crop") |> render_click() =~
@@ -88,7 +89,7 @@ defmodule PlantarWeb.CropLiveTest do
       {:ok, _show_live, html} = live(conn, Routes.crop_show_path(conn, :show, crop))
 
       assert html =~ "Show Crop"
-      assert html =~ crop.alternatives_names
+      assert html =~ crop.binomial_name
     end
 
     test "updates crop within modal", %{conn: conn, crop: crop} do

@@ -1,5 +1,18 @@
 defmodule PlantarWeb.LiveHelpers do
+  import Phoenix.LiveView
   import Phoenix.LiveView.Helpers
+  alias Plantar.Accounts
+
+  def assign_current_user(socket, session) do
+    fetch_current_user(socket, session)
+  end
+
+  # For liveviews, ensures current_user is in socket assigns.
+  def fetch_current_user(socket, session) do
+    user_token = Map.get(session, "user_token")
+    user = user_token && Accounts.get_user_by_session_token(user_token)
+    assign(socket, :current_user, user)
+  end
 
   @doc """
   Renders a component inside the `PlantarWeb.ModalComponent` component.

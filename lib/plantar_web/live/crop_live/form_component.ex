@@ -41,6 +41,8 @@ defmodule PlantarWeb.CropLive.FormComponent do
   end
 
   defp save_crop(socket, :new, crop_params) do
+    crop_params = crop_params
+      |> Map.put("user_id", socket.assigns.user_id)
     case Plant.create_crop(crop_params) do
       {:ok, _crop} ->
         {:noreply,

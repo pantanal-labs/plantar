@@ -1,6 +1,9 @@
 defmodule Plantar.PlantTest do
   use Plantar.DataCase
 
+  import Plantar.AccountsFixtures
+  import Plantar.PlantFixtures
+
   alias Plantar.Plant
 
   describe "crops" do
@@ -10,14 +13,6 @@ defmodule Plantar.PlantTest do
     @update_attrs %{alternatives_names: "some updated alternatives_names", binomial_name: "some updated binomial_name", days_of_maturity: 43, description: "some updated description", height: 43, name: "some updated name", row_spacing: 43, sun_requirements: "some updated sun_requirements"}
     @invalid_attrs %{alternatives_names: nil, binomial_name: nil, days_of_maturity: nil, description: nil, height: nil, name: nil, row_spacing: nil, sun_requirements: nil}
 
-    def crop_fixture(attrs \\ %{}) do
-      {:ok, crop} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Plant.create_crop()
-
-      crop
-    end
 
     test "list_crops/0 returns all crops" do
       crop = crop_fixture()
@@ -30,7 +25,10 @@ defmodule Plantar.PlantTest do
     end
 
     test "create_crop/1 with valid data creates a crop" do
-      assert {:ok, %Crop{} = crop} = Plant.create_crop(@valid_attrs)
+      user = user_fixture()
+      attrs = @valid_attrs |> Enum.into(%{user_id: user.id})
+
+      assert {:ok, %Crop{} = crop} = Plant.create_crop(attrs)
       assert crop.alternatives_names == "some alternatives_names"
       assert crop.binomial_name == "some binomial_name"
       assert crop.days_of_maturity == 42

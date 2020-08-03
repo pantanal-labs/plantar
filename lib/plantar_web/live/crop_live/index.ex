@@ -5,8 +5,11 @@ defmodule PlantarWeb.CropLive.Index do
   alias Plantar.Plant.Crop
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :crops, list_crops())}
+  def mount(_params, session, socket) do
+    {:ok,
+     socket
+     |> assign_current_user(session)
+     |> assign(:crops, list_crops())}
   end
 
   @impl true
