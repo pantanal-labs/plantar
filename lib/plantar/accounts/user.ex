@@ -10,6 +10,7 @@ defmodule Plantar.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :admin, :boolean, default: false
 
     has_many :crops, Crop
 
@@ -26,7 +27,7 @@ defmodule Plantar.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :password])
+    |> cast(attrs, [:name, :email, :password, :admin])
     |> validate_required([:name])
     |> validate_email()
     |> validate_password()

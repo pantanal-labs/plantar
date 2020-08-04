@@ -4,8 +4,10 @@ defmodule PlantarWeb.CropLive.Show do
   alias Plantar.Plant
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, socket}
+  def mount(_params, session, socket) do
+    {:ok,
+     socket
+     |> assign_current_user(session)}
   end
 
   @impl true

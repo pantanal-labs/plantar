@@ -39,12 +39,15 @@
 
         <td>
           <span><%= live_redirect "Show", to: Routes.crop_show_path(@socket, :show, crop) %></span>
-          <span><%= live_patch "Edit", to: Routes.crop_index_path(@socket, :edit, crop) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: crop.id, data: [confirm: "Are you sure?"] %></span>
+          <%= if @current_user && @current_user.admin do %>
+            <span><%= live_patch "Edit", to: Routes.crop_index_path(@socket, :edit, crop) %></span>
+            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: crop.id, data: [confirm: "Are you sure?"] %></span>
+          <% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<span><%= live_patch "New Crop", to: Routes.crop_index_path(@socket, :new) %></span>
+<%= if @current_user && @current_user.admin  do %>
+  <span><%= live_patch "New Crop", to: Routes.crop_index_path(@socket, :new) %></span>
+<% end %>
