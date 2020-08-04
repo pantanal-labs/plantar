@@ -5,11 +5,36 @@ defmodule PlantarWeb.CropLiveTest do
   import Plantar.AccountsFixtures
   import Plantar.PlantFixtures
 
-
-  @create_attrs %{alternatives_names: "some alternatives_names", binomial_name: "some binomial_name", days_of_maturity: 42, description: "some description", height: 42, name: "some name", row_spacing: 42, sun_requirements: "some sun_requirements"}
-  @update_attrs %{alternatives_names: "some updated alternatives_names", binomial_name: "some updated binomial_name", days_of_maturity: 43, description: "some updated description", height: 43, name: "some updated name", row_spacing: 43, sun_requirements: "some updated sun_requirements"}
-  @invalid_attrs %{alternatives_names: nil, binomial_name: nil, days_of_maturity: nil, description: nil, height: nil, name: nil, row_spacing: nil, sun_requirements: nil}
-
+  @create_attrs %{
+    alternatives_names: "some alternatives_names",
+    binomial_name: "some binomial_name",
+    days_of_maturity: 42,
+    description: "some description",
+    height: 42,
+    name: "some name",
+    row_spacing: 42,
+    sun_requirements: "some sun_requirements"
+  }
+  @update_attrs %{
+    alternatives_names: "some updated alternatives_names",
+    binomial_name: "some updated binomial_name",
+    days_of_maturity: 43,
+    description: "some updated description",
+    height: 43,
+    name: "some updated name",
+    row_spacing: 43,
+    sun_requirements: "some updated sun_requirements"
+  }
+  @invalid_attrs %{
+    alternatives_names: nil,
+    binomial_name: nil,
+    days_of_maturity: nil,
+    description: nil,
+    height: nil,
+    name: nil,
+    row_spacing: nil,
+    sun_requirements: nil
+  }
 
   defp create_crop(_) do
     crop = crop_fixture()
@@ -26,9 +51,8 @@ defmodule PlantarWeb.CropLiveTest do
       assert html =~ crop.alternatives_names
     end
 
-    test "saves new crop", %{conn: conn} do
-      user = user_fixture()
-
+    test "saves new crop when user is admin", %{conn: conn} do
+      user = user_fixture(%{admin: true})
       conn = conn |> log_in_user(user)
 
       {:ok, index_live, _html} = live(conn, Routes.crop_index_path(conn, :index))
@@ -52,7 +76,25 @@ defmodule PlantarWeb.CropLiveTest do
       assert html =~ "some alternatives_names"
     end
 
+    test "fails to save new crop when user is not admin", %{conn: conn} do
+      user = user_fixture()
+      conn = conn |> log_in_user(user)
+
+      {:ok, _index_live, html} = live(conn, Routes.crop_index_path(conn, :index))
+
+      refute html =~ "New Crop"
+    end
+
+    test "fails to save new crop when user is not logged in", %{conn: conn} do
+      {:ok, _index_live, html} = live(conn, Routes.crop_index_path(conn, :index))
+
+      refute html =~ "New Crop"
+    end
+
     test "updates crop in listing", %{conn: conn, crop: crop} do
+      user = user_fixture(%{admin: true})
+      conn = conn |> log_in_user(user)
+
       {:ok, index_live, _html} = live(conn, Routes.crop_index_path(conn, :index))
 
       assert index_live |> element("#crop-#{crop.id} a", "Edit") |> render_click() =~
@@ -74,7 +116,27 @@ defmodule PlantarWeb.CropLiveTest do
       assert html =~ "some updated alternatives_names"
     end
 
+    test "fails to update crop in listing when user is not admin", %{conn: conn, crop: crop} do
+      user = user_fixture()
+      conn = conn |> log_in_user(user)
+
+      {:ok, index_live, _html} = live(conn, Routes.crop_index_path(conn, :index))
+
+      assert has_element?(index_live, "#crop-#{crop.id}")
+      refute has_element?(index_live, "#crop-#{crop.id} a", "Edit")
+    end
+
+    test "fails to update crop in listing when user is not logged in", %{conn: conn, crop: crop} do
+      {:ok, index_live, _html} = live(conn, Routes.crop_index_path(conn, :index))
+
+      assert has_element?(index_live, "#crop-#{crop.id}")
+      refute has_element?(index_live, "#crop-#{crop.id} a", "Edit")
+    end
+
     test "deletes crop in listing", %{conn: conn, crop: crop} do
+      user = user_fixture(admin: true)
+      conn = conn |> log_in_user(user)
+
       {:ok, index_live, _html} = live(conn, Routes.crop_index_path(conn, :index))
 
       assert index_live |> element("#crop-#{crop.id} a", "Delete") |> render_click()
@@ -93,6 +155,9 @@ defmodule PlantarWeb.CropLiveTest do
     end
 
     test "updates crop within modal", %{conn: conn, crop: crop} do
+      user = user_fixture(%{admin: true})
+      conn = conn |> log_in_user(user)
+
       {:ok, show_live, _html} = live(conn, Routes.crop_show_path(conn, :show, crop))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
@@ -112,6 +177,23 @@ defmodule PlantarWeb.CropLiveTest do
 
       assert html =~ "Crop updated successfully"
       assert html =~ "some updated alternatives_names"
+    end
+
+    test "fails to update crop in listing when user is not admin", %{conn: conn, crop: crop} do
+      user = user_fixture()
+      conn = conn |> log_in_user(user)
+
+      {:ok, show_live, html} = live(conn, Routes.crop_show_path(conn, :show, crop))
+
+      assert html =~ crop.name
+      refute has_element?(show_live, "a", "Edit")
+    end
+
+    test "fails to update crop in listing when user is not logged in", %{conn: conn, crop: crop} do
+      {:ok, show_live, html} = live(conn, Routes.crop_show_path(conn, :show, crop))
+
+      assert html =~ crop.name
+      refute has_element?(show_live, "a", "Edit")
     end
   end
 end
