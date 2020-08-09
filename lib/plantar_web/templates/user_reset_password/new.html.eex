@@ -1,15 +1,21 @@
-<h1>Forgot your password?</h1>
+<div class="h-screen flex items-center justify-center flex-col ">
+  <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1474440692490-2e83ae13ba29?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2400&q=80" />
+  
+  <div class="absolute max-w-lg p-6 flex flex-col items-center justify-center bg-white shadow-lg rounded-lg">
 
-<%= form_for :user, Routes.user_reset_password_path(@conn, :create), fn f -> %>
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
-
-  <div>
-    <%= submit "Send instructions to reset password" %>
+    <h1 class="text-3xl  font-bold mb-8">Esqueceu sua senha?</h1>
+    <%= form_for :user, Routes.user_reset_password_path(@conn, :create), fn f -> %>
+    <%= email_input f, :email, placeholder: "Email", class: "w-full mb-6 border-b  text-lg border-gray-500 placeholder-gray-600", required: true %>
+    
+    <div>
+      <%= submit "Enviar instruções para redefinir senha", class: "w-full bg-orange-500 px-3 py-2 mt-3 rounded-md" %>
+    </div>
+    <% end %>
+    <div class="flex flex-center">
+      <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
+      <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
+    </div>
   </div>
-<% end %>
+</div>
 
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
-</p>
+
