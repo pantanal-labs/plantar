@@ -2,6 +2,12 @@ defmodule PlantarWeb.CropLive.FormComponent do
   use PlantarWeb, :live_component
 
   alias Plantar.Plant
+  alias PlantarWeb.CropView
+
+  @impl true
+  def render(assigns) do
+    Phoenix.View.render(CropView, "form_component.html", assigns)
+  end
 
   @impl true
   def update(%{crop: crop} = assigns, socket) do

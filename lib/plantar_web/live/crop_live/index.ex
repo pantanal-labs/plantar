@@ -3,6 +3,12 @@ defmodule PlantarWeb.CropLive.Index do
 
   alias Plantar.Plant
   alias Plantar.Plant.Crop
+  alias PlantarWeb.CropView
+
+  @impl true
+  def render(assigns) do
+    Phoenix.View.render(CropView, "index.html", assigns)
+  end
 
   @impl true
   def mount(_params, session, socket) do

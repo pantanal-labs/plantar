@@ -2,6 +2,12 @@ defmodule PlantarWeb.CropLive.Show do
   use PlantarWeb, :live_view
 
   alias Plantar.Plant
+  alias PlantarWeb.CropView
+
+  @impl true
+  def render(assigns) do
+    Phoenix.View.render(CropView, "show.html", assigns)
+  end
 
   @impl true
   def mount(_params, session, socket) do
