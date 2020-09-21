@@ -18,12 +18,10 @@ defmodule PlantarWeb.CropLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
+    crop = Plant.get_crop!(id)
     {:noreply,
      socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:crop, Plant.get_crop!(id))}
+     |> assign(:page_title, crop.name)
+     |> assign(:crop, crop)}
   end
-
-  defp page_title(:show), do: "Show Crop"
-  defp page_title(:edit), do: "Edit Crop"
 end

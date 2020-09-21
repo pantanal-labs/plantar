@@ -1,12 +1,14 @@
-<div class="container mx-auto">
-  <ul class="flex justify-start">
+<div class="w-10/12 mx-auto flex">
+  <div class="py-3 font-bold text-2xl">Plantar</div>
+
+  <ul class="flex md:ml-auto justify-start">
+    <li class="py-3 mr-5 ml-auto font-semibold text-lg">Explorar</li>
   <%= if @current_user do %>
-    <li class="py-3 mr-5 font-bold ml-auto text-xl">Explorar</li>
-    <li class="py-3 mr-5 font-semibold text-xl"><%= link "Configurações", to: Routes.user_settings_path(@conn, :edit) %></li>
-    <li class="py-3 mr-5 font-semibold text-xl"><%= link "Sair", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
+    <li class="py-3 mr-5  text-lg"><%= link "Configurações", to: Routes.user_settings_path(@conn, :edit) %></li>
+    <li class="py-3 mr-5 text-lg"><%= link "Sair", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
   <% else %>
-    <li class="py-3 mr-5 font-semibold ml-auto text-xl"><%= link "Entrar", to: Routes.user_session_path(@conn, :new) %></li>
-    <li class="py-3 mr-5 font-semibold text-xl"><%= link "Registrar-se", to: Routes.user_registration_path(@conn, :new) %></li>
+    <li class="py-3 mr-5 ml-auto text-lg"><%= link "Entrar", to: Routes.user_session_path(@conn, :new) %></li>
+    <li class="py-3 mr-5 text-lg"><%= link "Registrar-se", to: Routes.user_registration_path(@conn, :new) %></li>
   <% end %>
   </ul>
 </div>

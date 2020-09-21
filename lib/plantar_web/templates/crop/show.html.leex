@@ -1,58 +1,71 @@
-<h1>Show Crop</h1>
-
 <%= if @live_action in [:edit] do %>
   <%= live_modal @socket, PlantarWeb.CropLive.FormComponent,
-    id: @crop.id,
-    title: @page_title,
-    action: @live_action,
-    crop: @crop,
-    return_to: Routes.crop_show_path(@socket, :show, @crop) %>
-<% end %>
+  id: @crop.id,
+  title: @page_title,
+  action: @live_action,
+  crop: @crop,
+  return_to: Routes.crop_show_path(@socket, :show, @crop) %>
+  <% end %>
+<div class="w-10/12 mx-auto">
 
-<ul>
+  <div class="w-2/3  mt-6 mb-4 border-b-2 border-gray-200">
+    <h2 class="sm:text-3xl text-2xl font-medium text-gray-900 mt-4 mb-4"><%= @crop.name %></h2>
+    <p class="leading-relaxed mb-8"><%= @crop.description %></p>
+  </div>
+  <div class="flex flex-row">
+    <div class="w-2/4">
+        <div class="mb-4">
+          <div class="text-lg font-semibold mb-2">Também conhecido como:</div>
+          <div class="leading-relaxed text-gray-800"><%= @crop.alternatives_names %></div>
+        </div>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @crop.name %>
-  </li>
+        <div class="mb-4">
+          <div class="text-lg font-semibold mb-2">
+            Nomenclatura binomial:
+          </div>
+          <div class="leading-relaxed text-gray-800">
+            <%= @crop.binomial_name %>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="text-lg font-semibold mb-2">
+            Altura:
+          </div>
+          <div class="leading-relaxed text-gray-800">
+            <%= @crop.height %>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="text-lg font-semibold mb-2">
+            Espaço entre as fileiras:
+          </div>
+          <div class="leading-relaxed text-gray-800">
+            <%= @crop.row_spacing %>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="text-lg font-semibold mb-2">
+            Dias de maturação:
+          </div>
+          <div class="leading-relaxed text-gray-800">
+            <%= @crop.days_of_maturity %>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="text-lg font-semibold mb-2">
+            Necessidade de sol:
+          </div>
+          <div class="leading-relaxed text-gray-800">
+            <%= @crop.sun_requirements %>
+          </div>
+        </div>
+    </div>
+    <div class="w-2/4">
+      <p></p>
+    </div>
+  </div>
 
-  <li>
-    <strong>Alternatives names:</strong>
-    <%= @crop.alternatives_names %>
-  </li>
-
-  <li>
-    <strong>Binomial name:</strong>
-    <%= @crop.binomial_name %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
-    <%= @crop.description %>
-  </li>
-
-  <li>
-    <strong>Height:</strong>
-    <%= @crop.height %>
-  </li>
-
-  <li>
-    <strong>Row spacing:</strong>
-    <%= @crop.row_spacing %>
-  </li>
-
-  <li>
-    <strong>Days of maturity:</strong>
-    <%= @crop.days_of_maturity %>
-  </li>
-
-  <li>
-    <strong>Sun requirements:</strong>
-    <%= @crop.sun_requirements %>
-  </li>
-
-</ul>
-<%= if @current_user && @current_user.admin do %>
-  <span><%= live_patch "Edit", to: Routes.crop_show_path(@socket, :edit, @crop), class: "button" %></span>
-<% end %>
-<span><%= live_redirect "Back", to: Routes.crop_index_path(@socket, :index) %></span>
+  <%= if @current_user && @current_user.admin do %>
+    <span><%= live_patch "Edit", to: Routes.crop_show_path(@socket, :edit, @crop), class: "button" %></span>
+  <% end %>
+</div>
