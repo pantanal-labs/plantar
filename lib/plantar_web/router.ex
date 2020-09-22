@@ -20,7 +20,7 @@ defmodule PlantarWeb.Router do
   scope "/", PlantarWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/", HomeLive, :index
   end
 
   # Other scopes may use custom stacks.
@@ -72,7 +72,6 @@ defmodule PlantarWeb.Router do
   scope "/", PlantarWeb do
     pipe_through [:browser]
 
-    live "/crops", CropLive.Index, :index
     live "/crops/new", CropLive.Index, :new
     live "/crops/:id/edit", CropLive.Index, :edit
 
