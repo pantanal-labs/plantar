@@ -1,0 +1,47 @@
+<div class="w-10/12 mx-auto">
+
+  <div class="w-2/3  mt-6 mb-4 border-b-2 border-gray-200">
+    <h2 class="sm:text-3xl text-2xl font-medium text-gray-900 mt-4 mb-4">New Crop</h2>
+
+    <%= f = form_for @changeset, "#",
+      id: "crop-form",
+      phx_change: "validate",
+      phx_submit: "save" %>
+
+      <%= label f, :name, "Nome", class: "text-sm font-bold text-gray-700 tracking-wide" %>
+      <%= text_input f, :name, class: "w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" %>
+      <%= error_tag f, :name %>
+
+      <%= label f, :alternatives_names, "Outros nomes", class: "text-sm font-bold text-gray-700 tracking-wide" %>
+      <%= text_input f, :alternatives_names, class: "w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" %>
+      <%= error_tag f, :alternatives_names %>
+
+      <%= label f, :binomial_name, "Nome Binomial", class: "text-sm font-bold text-gray-700 tracking-wide" %>
+      <%= text_input f, :binomial_name, class: "w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" %>
+      <%= error_tag f, :binomial_name %>
+
+      <%= label f, :description, "Descrição", class: "text-sm font-bold text-gray-700 tracking-wide" %>
+      <%= textarea f, :description, class: "w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" %>
+      <%= error_tag f, :description %>
+
+      <%= label f, :height, "Altura", class: "text-sm font-bold text-gray-700 tracking-wide" %>
+      <%= number_input f, :height, class: "w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" %>
+      <%= error_tag f, :height %>
+
+      <%= label f, :row_spacing, "Espaço entre as fileiras", class: "text-sm font-bold text-gray-700 tracking-wide" %>
+      <%= number_input f, :row_spacing, class: "w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" %>
+      <%= error_tag f, :row_spacing %>
+
+      <%= label f, :days_of_maturity, "Dias de maturação", class: "text-sm font-bold text-gray-700 tracking-wide" %>
+      <%= number_input f, :days_of_maturity, class: "w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" %>
+      <%= error_tag f, :days_of_maturity %>
+
+      <%= label f, :sun_requirements, "Necessidade de Sol", class: "text-sm font-bold text-gray-700 tracking-wide" %>
+      <%= text_input f, :sun_requirements, class: "w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" %>
+      <%= error_tag f, :sun_requirements %>
+
+      <%= submit("Salvar", phx_disable_with: "Salvando...", class: "font-bold mt-6 sm:ml-4 px-8 py-3 sm:py-2 rounded bg-purple-700 text-gray-100 hover:bg-purple-900 transition duration-300 text-center") %>
+    </form>
+  </div>
+
+</div>
