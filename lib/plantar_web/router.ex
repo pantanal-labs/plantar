@@ -72,7 +72,7 @@ defmodule PlantarWeb.Router do
   scope "/", PlantarWeb do
     pipe_through [:browser]
 
-    live "/crops/new", CropLive.Index, :new
+    live "/crops/new", CropLive.New, :new
     live "/crops/:id/edit", CropLive.Index, :edit
 
     live "/crops/:id", CropLive.Show, :show

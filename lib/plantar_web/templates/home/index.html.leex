@@ -21,6 +21,6 @@
     <% end %>
   </div>
   <%= if @current_user && @current_user.admin  do %>
-    <span><%= live_patch "New Crop", to: Routes.crop_index_path(@socket, :new) %></span>
+    <span><%= live_redirect "New Crop", to: Routes.crop_new_path(@socket, :new) %></span>
   <% end %>
 </div>
