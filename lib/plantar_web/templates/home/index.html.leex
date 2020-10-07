@@ -2,7 +2,11 @@
   <div class="w-full md:w-2/3 flex flex-col mt-10 mb-16 mx-auto text-center">
     <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">O que você quer plantar?</p>
     <div class="flex w-full justify-center mt-4">
-      <input class="border-0 bg-gray-100 rounded mr-4 border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2 lg:w-full xl:w-1/2 w-2/4 md:w-full" placeholder="Tomate" type="text">
+      <form phx-submit="search">
+
+      <input name="search_query" value="<%= @search_query %>" class="border-0 bg-gray-100 rounded mr-4 border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2 lg:w-full xl:w-1/2 w-2/4 md:w-full" placeholder="Tomate" type="text">
+      <button>Buscar</button>
+      </form>
     </div>
   </div>
   <div class="w-full flex flex-wrap -m-4">
