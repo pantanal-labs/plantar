@@ -13,7 +13,7 @@ defmodule Plantar.Search do
       base_query
       |> offset(^offset)
       |> limit(^limit)
-      |> order_by(desc: :updated_at)
+      #|> order_by(desc: :inserted_at)
       |> preload([:user])
       |> Repo.all()
 
