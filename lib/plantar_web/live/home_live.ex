@@ -1,10 +1,10 @@
 defmodule PlantarWeb.HomeLive do
   use PlantarWeb, :live_view
 
-  alias Plantar.{Plant, Search}
+  alias Plantar.Search
   alias PlantarWeb.HomeView
 
-  @crops_per_page 16
+  @crops_per_page 9
 
   @impl true
   def render(assigns) do
@@ -12,55 +12,80 @@ defmodule PlantarWeb.HomeLive do
   end
 
   @impl true
-
-  def mount(_params, %{"user_token" => _user_token} = session, socket) do
-    {:ok,
-     socket
-     |> assign_defaults(session)}
-  end
-
-  @impl true
   def mount(_params, session, socket) do
     {:ok,
      socket
-     |> assign_defaults(session)}
-  end
-
-  defp list_crops do
-    Plant.list_crops()
+     |> assign_defaults(session), temporary_assigns: [crops: []]}
   end
 
   @impl true
   def handle_params(params, _uri, socket) do
     query = String.trim(params["q"] || "")
-    search(socket, query)
 
     {:noreply,
      socket
-     |> assign(page: 1)}
+     |> assign(current_page: 1)
+     |> update_with_replace()
+     |> search(query)}
   end
 
   @impl true
-  def handle_event("search", %{"search_query" => search_query}, socket) do
-    socket =
-      socket
-      |> search(search_query)
+  def handle_event("search", %{"q" => search_query}, %{assigns: assigns} = socket) do
+    query = String.trim(search_query)
+    previous_query = assigns.search_query
+
+    if query == previous_query do
+      {:noreply, assign(socket, search_query: query)}
+    else
+      {:noreply, set_params(socket, q: query)}
+    end
+
+    socket = search(socket, search_query)
 
     {:noreply, socket}
   end
 
+  def handle_event("load-more", _params, %{assigns: assigns} = socket) do
+    %{search_query: search_query} = assigns
+
+    {:noreply,
+     socket
+     |> update(:current_page, &(&1 + 1))
+     |> update_with_append()
+     |> search(search_query)}
+  end
+
   defp search(socket, search_query) do
-    offset = (socket.assigns.page - 1) * @crops_per_page
+    offset = (socket.assigns.current_page - 1) * @crops_per_page
 
     %{results: results, total_count: total_count} =
       Search.find_crops(search_query, offset: offset, limit: @crops_per_page)
 
-    assign(socket, crops: results, search_query: search_query)
+    assign(socket,
+      crops: results,
+      search_query: search_query,
+      total_count: total_count
+    )
+  end
+
+  defp set_params(socket, opts) do
+    push_patch(socket, to: "/")
   end
 
   defp assign_defaults(socket, session) do
     socket
     |> assign_current_user(session)
-    |> assign(crops: list_crops(), page: 1, search_query: "")
+    |> assign(current_page: 1)
+    |> assign(search_query: "")
+    |> search(nil)
+    |> update_with_append()
+  end
+
+  defp update_with_append(socket) do
+    assign(socket, update: "append")
+  end
+
+  defp update_with_replace(socket) do
+    assign(socket, update: "replace")
   end
 end
